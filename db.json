@@ -1,0 +1,67 @@
+{
+  "books": [
+    {
+      "title": "One Hundred Years of Solitude",
+      "author": "Gabriel García Márquez",
+      "year": 1967,
+      "pages": 471,
+      "genre": "Fiction",
+      "cover": "https://m.media-amazon.com/images/I/51VbaJ8aOvL._SY445_SX342_FMwebp_.jpg",
+      "id": 1
+    },
+    {
+      "title": "The Name of the Wind",
+      "author": "Patrick Rothfuss",
+      "year": 2007,
+      "pages": 662,
+      "genre": "Fantasy",
+      "cover": "https://m.media-amazon.com/images/I/61q-9K0hlJL._SY300_SX300_QL70_FMwebp_.jpg",
+      "id": 2
+    },
+    {
+      "title": "Sapiens: A Brief History of Humankind",
+      "author": "Yuval Noah Harari",
+      "year": 2011,
+      "pages": 443,
+      "genre": "Non-fiction",
+      "cover": "https://m.media-amazon.com/images/I/81yD8trm6qL._SX522_.jpg",
+      "id": 3
+    },
+    {
+      "title": "Dune",
+      "author": "Frank Herbert",
+      "year": 1965,
+      "pages": 688,
+      "genre": "Sci-fi",
+      "cover": "https://m.media-amazon.com/images/I/71-1WBgjGoL._SX522_.jpg",
+      "id": 4
+    },
+    {
+      "title": "It",
+      "author": "Stephen King",
+      "year": 1986,
+      "pages": 1138,
+      "genre": "Horror",
+      "cover": "https://m.media-amazon.com/images/I/71oBjdOSkHL._SX522_.jpg",
+      "id": 5
+    },
+    {
+      "title": "Pride and Prejudice",
+      "author": "Jane Austen",
+      "year": 1813,
+      "pages": 432,
+      "genre": "Romance",
+      "cover": "https://m.media-amazon.com/images/I/71B6JdVlgpL._SY522_.jpg",
+      "id": 6
+    },
+    {
+      "title": "The Cruel Prince",
+      "author": "Holly Black",
+      "year": 2020,
+      "pages": 350,
+      "genre": "Fantasy",
+      "cover": "https://m.media-amazon.com/images/I/91dQRqjWTbL._SY522_.jpg",
+      "id": 7
+    }
+  ]
+}

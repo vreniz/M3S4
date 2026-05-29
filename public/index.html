@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MyLibrary — My book collection</title>
+
+  <!--
+    TASK 1: Archivos vinculados correctamente.
+    Bootstrap 5.3 via CDN — framework CSS/JS para el diseño.
+    Bootstrap Icons para los íconos de la interfaz.
+  -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body class="bg-light">
+
+  <!-- ══════════════════════════════════════════════
+       NAVBAR — barra de navegación principal
+  ══════════════════════════════════════════════ -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm sticky-top">
+    <div class="container-fluid px-4">
+
+      <!-- Marca / logo -->
+      <a class="navbar-brand d-flex align-items-center gap-2 fw-bold" href="#">
+        <i class="bi bi-book-half text-warning fs-4"></i>
+        <span>MyLibrary</span>
+      </a>
+
+      <!-- Indicador de estado de conexión con la API -->
+      <div class="d-flex align-items-center gap-3 ms-auto">
+        <div id="api-status" class="api-status">
+          <span class="status-dot bg-secondary"></span>
+          <small class="status-text text-secondary">Connecting…</small>
+        </div>
+
+        <!-- Botón que abre el modal de agregar libro -->
+        <button class="btn btn-warning fw-semibold" data-bs-toggle="modal" data-bs-target="#modalAdd">
+          <i class="bi bi-plus-lg me-1"></i> Add book
+        </button>
+      </div>
+
+    </div>
+  </nav>
+
+  <!-- ══════════════════════════════════════════════
+       HERO — bienvenida y estadísticas rápidas
+  ══════════════════════════════════════════════ -->
+  <div class="hero-bar bg-dark text-white">
+    <div class="container-fluid px-4 py-4">
+      <div class="row align-items-center g-3">
+
+        <div class="col-md-5">
+          <h1 class="fs-3 fw-bold mb-1">My personal collection</h1>
+          <p class="text-secondary mb-0 small">
+            Synced with JSON Server · localStorage active
+          </p>
+        </div>
+
+        <!-- Tarjetas de estadísticas rápidas -->
+        <div class="col-md-7">
+          <div class="row g-2">
+
+            <div class="col-4">
+              <div class="stat-card rounded-3 p-3 text-center">
+                <div class="stat-num fw-bold fs-3" id="stat-total">—</div>
+                <div class="stat-label small text-uppercase">Books</div>
+              </div>
+            </div>
+
+            <div class="col-4">
+              <div class="stat-card rounded-3 p-3 text-center">
+                <div class="stat-num fw-bold fs-3" id="stat-pages">—</div>
+                <div class="stat-label small text-uppercase">Pages</div>
+              </div>
+            </div>
+
+            <div class="col-4">
+              <div class="stat-card rounded-3 p-3 text-center">
+                <div class="stat-num fw-bold fs-3" id="stat-genres">—</div>
+                <div class="stat-label small text-uppercase">Genres</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       CONTENIDO PRINCIPAL — layout de 3 columnas
+  ══════════════════════════════════════════════ -->
+  <div class="container-fluid px-4 py-4">
+    <div class="row g-4">
+
+      <!-- ──────────────────────────────────────────
+           COLUMNA IZQUIERDA — controles CRUD
+      ────────────────────────────────────────── -->
+      <div class="col-lg-3 col-xl-2">
+        <div class="sticky-sidebar">
+
+          <!-- Panel de operaciones CRUD -->
+          <div class="card shadow-sm border-0 mb-3">
+            <div class="card-header bg-white border-bottom fw-semibold small text-uppercase text-muted py-2">
+              <i class="bi bi-sliders me-1"></i> Operations
+            </div>
+            <div class="card-body p-2 d-grid gap-2">
+
+              <!--
+                TASK 5: Botones para cada método HTTP.
+                Cada botón llama a su función de fetch correspondiente.
+              -->
+              <button class="btn btn-primary btn-sm d-flex align-items-center gap-2" id="btn-get">
+                <span class="badge bg-primary-subtle text-primary fw-bold px-1">GET</span>
+                Load collection
+              </button>
+
+              <button class="btn btn-outline-secondary btn-sm d-flex align-items-center gap-2"
+                      data-bs-toggle="modal" data-bs-target="#modalAdd">
+                <span class="badge bg-success-subtle text-success fw-bold px-1">POST</span>
+                Add book
+              </button>
+
+              <button class="btn btn-outline-secondary btn-sm d-flex align-items-center gap-2"
+                      data-bs-toggle="modal" data-bs-target="#modalEdit">
+                <span class="badge bg-warning-subtle text-warning fw-bold px-1">PUT</span>
+                Edit by ID
+              </button>
+
+              <button class="btn btn-outline-secondary btn-sm d-flex align-items-center gap-2"
+                      data-bs-toggle="modal" data-bs-target="#modalDelete">
+                <span class="badge bg-danger-subtle text-danger fw-bold px-1">DELETE</span>
+                Remove by ID
+              </button>
+
+            </div>
+          </div>
+
+          <!-- Filtro por género -->
+          <div class="card shadow-sm border-0 mb-3">
+            <div class="card-header bg-white border-bottom fw-semibold small text-uppercase text-muted py-2">
+              <i class="bi bi-funnel me-1"></i> Filter
+            </div>
+            <div class="card-body p-3">
+              <label class="form-label small text-muted mb-1">Genre</label>
+              <select class="form-select form-select-sm" id="genre-filter">
+                <option value="">All genres</option>
+                <option value="Fiction">Fiction</option>
+                <option value="Non-fiction">Non-fiction</option>
+                <option value="Fantasy">Fantasy</option>
+                <option value="Sci-fi">Sci-fi</option>
+                <option value="Horror">Horror</option>
+                <option value="Romance">Romance</option>
+                <option value="Mystery">Mystery</option>
+                <option value="History">History</option>
+                <option value="Biography">Biography</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Historial de sesión -->
+          <div class="card shadow-sm border-0">
+            <div class="card-header bg-white border-bottom fw-semibold small text-uppercase text-muted py-2">
+              <i class="bi bi-clock-history me-1"></i> History
+            </div>
+            <!--
+              TASK 3: Lista <ul> donde se renderizan los elementos de historial.
+              Se usa appendChild() en JS para agregar cada <li>.
+            -->
+            <ul class="list-group list-group-flush" id="history-list" style="max-height:220px;overflow-y:auto">
+              <li class="list-group-item text-muted small text-center py-3">
+                No activity yet
+              </li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ──────────────────────────────────────────
+           COLUMNA CENTRAL — grid de libros
+      ────────────────────────────────────────── -->
+      <div class="col-lg-6 col-xl-7">
+
+        <!-- Barra superior del grid -->
+        <div class="d-flex align-items-center justify-content-between mb-3">
+          <div>
+            <h2 class="fs-5 fw-bold mb-0">Collection</h2>
+            <small class="text-muted" id="counter-label">Loading…</small>
+          </div>
+          <!-- Buscador en tiempo real -->
+          <div class="input-group input-group-sm" style="max-width:220px">
+            <span class="input-group-text bg-white border-end-0">
+              <i class="bi bi-search text-muted"></i>
+            </span>
+            <input type="text" class="form-control border-start-0" id="search-input"
+                   placeholder="Search book…"/>
+          </div>
+        </div>
+
+        <!-- Mensajes de alerta dinámicos (TASK 2) -->
+        <div id="alert-zone" class="mb-3"></div>
+
+        <!--
+          TASK 3: Lista principal donde se renderizan los libros.
+          En JS usamos appendChild() para agregar cada <li> de libro.
+        -->
+        <ul class="list-unstyled row g-3" id="book-list">
+          <li class="col-12">
+            <div class="text-center py-5 text-muted">
+              <i class="bi bi-book display-4 d-block mb-3 opacity-25"></i>
+              <p class="mb-2 fw-semibold">Your collection is empty</p>
+              <p class="small">Press <strong>Load collection</strong> or add a new book.</p>
+            </div>
+          </li>
+        </ul>
+
+      </div>
+
+      <!-- ──────────────────────────────────────────
+           COLUMNA DERECHA — log de API
+      ────────────────────────────────────────── -->
+      <div class="col-lg-3 col-xl-3">
+        <div class="sticky-sidebar">
+
+          <div class="card shadow-sm border-0">
+            <div class="card-header bg-dark text-white border-0 d-flex justify-content-between align-items-center py-2">
+              <span class="small fw-semibold font-monospace">API Response</span>
+              <span class="badge rounded-pill" id="log-badge">—</span>
+            </div>
+            <!--
+              El log muestra exactamente la respuesta JSON del servidor.
+              JSON.stringify(data, null, 2) formatea con sangría de 2 espacios.
+            -->
+            <pre class="log-pre p-3 mb-0" id="log">Waiting for operation…</pre>
+          </div>
+
+          <!-- Info de LocalStorage -->
+          <div class="card shadow-sm border-0 mt-3">
+            <div class="card-header bg-white border-bottom fw-semibold small text-uppercase text-muted py-2">
+              <i class="bi bi-hdd me-1"></i> LocalStorage
+            </div>
+            <div class="card-body p-3">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="small text-muted">Cached books</span>
+                <span class="badge bg-secondary" id="ls-count">0</span>
+              </div>
+              <div class="d-flex justify-content-between align-items-center">
+                <span class="small text-muted">Key</span>
+                <code class="small">myLibrary</code>
+              </div>
+              <hr class="my-2"/>
+              <button class="btn btn-outline-danger btn-sm w-100" id="btn-clear-ls">
+                <i class="bi bi-trash me-1"></i> Clear cache
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════════
+       MODAL — Add book (POST)
+       TASK 2: Formulario para capturar datos del usuario
+  ══════════════════════════════════════════════ -->
+  <div class="modal fade" id="modalAdd" tabindex="-1" aria-labelledby="modalAddLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 shadow">
+
+        <div class="modal-header bg-success text-white border-0">
+          <h5 class="modal-title fw-bold" id="modalAddLabel">
+            <i class="bi bi-plus-circle me-2"></i>Add new book
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+
+        <div class="modal-body p-4">
+          <div class="row g-3">
+
+            <div class="col-12">
+              <label class="form-label fw-semibold small">Title <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="post-title"
+                     placeholder="e.g. One Hundred Years of Solitude"/>
+            </div>
+
+            <div class="col-12">
+              <label class="form-label fw-semibold small">Author <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="post-author"
+                     placeholder="e.g. Gabriel García Márquez"/>
+            </div>
+
+            <div class="col-6">
+              <label class="form-label fw-semibold small">Year <span class="text-danger">*</span></label>
+              <input type="number" class="form-control" id="post-year"
+                     placeholder="1967" min="1000" max="2099"/>
+            </div>
+
+            <div class="col-6">
+              <label class="form-label fw-semibold small">Pages <span class="text-danger">*</span></label>
+              <input type="number" class="form-control" id="post-pages"
+                     placeholder="471" min="1"/>
+            </div>
+
+            <div class="col-12">
+              <label class="form-label fw-semibold small">Genre <span class="text-danger">*</span></label>
+              <select class="form-select" id="post-genre">
+                <option value="">— Select a genre —</option>
+                <option value="Fiction">Fiction</option>
+                <option value="Non-fiction">Non-fiction</option>
+                <option value="Fantasy">Fantasy</option>
+                <option value="Sci-fi">Sci-fi</option>
+                <option value="Horror">Horror</option>
+                <option value="Romance">Romance</option>
+                <option value="Mystery">Mystery</option>
+                <option value="History">History</option>
+                <option value="Biography">Biography</option>
+              </select>
+            </div>
+
+            <div class="col-12">
+              <label class="form-label fw-semibold small">
+                Cover URL <span class="text-muted">(optional)</span>
+              </label>
+              <input type="url" class="form-control" id="post-cover"
+                     placeholder="https://covers.openlibrary.org/…"/>
+              <div class="form-text">Paste the direct image URL of the book cover.</div>
+            </div>
+
+          </div>
+
+          <!-- Zona de alerta dentro del modal -->
+          <div id="alert-modal-post" class="mt-3"></div>
+        </div>
+
+        <div class="modal-footer border-0 pt-0 px-4 pb-4">
+          <button class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+          <button class="btn btn-success fw-semibold px-4" id="btn-post">
+            <i class="bi bi-plus-circle me-1"></i> Add book
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════════
+       MODAL — Edit book (PUT)
+  ══════════════════════════════════════════════ -->
+  <div class="modal fade" id="modalEdit" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 shadow">
+
+        <div class="modal-header bg-warning border-0">
+          <h5 class="modal-title fw-bold">
+            <i class="bi bi-pencil-square me-2"></i>Update book
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+
+        <div class="modal-body p-4">
+          <div class="row g-3">
+
+            <div class="col-12">
+              <label class="form-label fw-semibold small">Book ID <span class="text-danger">*</span></label>
+              <input type="number" class="form-control" id="put-id" placeholder="e.g. 3" min="1"/>
+              <div class="form-text">The ID is shown on each card in the collection.</div>
+            </div>
+
+            <div class="col-12">
+              <label class="form-label fw-semibold small">Title <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="put-title" placeholder="Updated title"/>
+            </div>
+
+            <div class="col-12">
+              <label class="form-label fw-semibold small">Author <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="put-author" placeholder="Updated author"/>
+            </div>
+
+            <div class="col-6">
+              <label class="form-label fw-semibold small">Year</label>
+              <input type="number" class="form-control" id="put-year" placeholder="1967"/>
+            </div>
+
+            <div class="col-6">
+              <label class="form-label fw-semibold small">Pages</label>
+              <input type="number" class="form-control" id="put-pages" placeholder="471"/>
+            </div>
+
+            <div class="col-12">
+              <label class="form-label fw-semibold small">Genre</label>
+              <select class="form-select" id="put-genre">
+                <option value="">— Select —</option>
+                <option value="Fiction">Fiction</option>
+                <option value="Non-fiction">Non-fiction</option>
+                <option value="Fantasy">Fantasy</option>
+                <option value="Sci-fi">Sci-fi</option>
+                <option value="Horror">Horror</option>
+                <option value="Romance">Romance</option>
+                <option value="Mystery">Mystery</option>
+                <option value="History">History</option>
+                <option value="Biography">Biography</option>
+              </select>
+            </div>
+
+            <div class="col-12">
+              <label class="form-label fw-semibold small">Cover URL</label>
+              <input type="url" class="form-control" id="put-cover" placeholder="https://…"/>
+            </div>
+
+          </div>
+
+          <div id="alert-modal-put" class="mt-3"></div>
+        </div>
+
+        <div class="modal-footer border-0 pt-0 px-4 pb-4">
+          <button class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+          <button class="btn btn-warning fw-semibold px-4" id="btn-put">
+            <i class="bi bi-pencil-square me-1"></i> Update book
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════════
+       MODAL — Delete book (DELETE)
+  ══════════════════════════════════════════════ -->
+  <div class="modal fade" id="modalDelete" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+      <div class="modal-content border-0 shadow">
+
+        <div class="modal-header bg-danger text-white border-0">
+          <h5 class="modal-title fw-bold">
+            <i class="bi bi-trash me-2"></i>Delete book
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+
+        <div class="modal-body p-4">
+          <p class="text-muted small mb-3">
+            This action is irreversible. The book will be removed from the server and the local cache.
+          </p>
+          <label class="form-label fw-semibold small">Book ID <span class="text-danger">*</span></label>
+          <input type="number" class="form-control" id="del-id" placeholder="e.g. 5" min="1"/>
+          <div id="alert-modal-del" class="mt-3"></div>
+        </div>
+
+        <div class="modal-footer border-0 pt-0 px-4 pb-4">
+          <button class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+          <button class="btn btn-danger fw-semibold px-4" id="btn-delete">
+            <i class="bi bi-trash me-1"></i> Delete
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════════
+       MODAL — Book detail view
+  ══════════════════════════════════════════════ -->
+  <div class="modal fade" id="modalDetail" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 shadow">
+        <div class="modal-header border-0 pb-0">
+          <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body p-4 pt-0" id="detail-content">
+          <!-- Se llena dinámicamente por JS -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!--
+    Bootstrap JS — va al final del body para no bloquear el renderizado.
+    Incluye Popper (necesario para modales, dropdowns, tooltips).
+  -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!--
+    Script de la aplicación va DESPUÉS de Bootstrap
+    para que los objetos bootstrap.Modal etc. ya existan.
+    También va después del HTML para que todos los getElementById funcionen.
+  -->
+  <script src="app.js"></script>
+</body>
+</html>

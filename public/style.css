@@ -1,0 +1,175 @@
+/* ════════════════════════════════════════════════════
+   MyLibrary — style.css
+   Estilos personalizados que complementan Bootstrap.
+   Bootstrap ya maneja el layout; aquí solo ajustamos
+   detalles visuales que Bootstrap no cubre.
+════════════════════════════════════════════════════ */
+
+/* ── Importar fuente ── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background-color: #f4f6f9 !important;
+}
+
+/* ── NAVBAR ── */
+.navbar-brand span {
+  letter-spacing: -0.02em;
+}
+
+/* Indicador de estado de la API */
+.api-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+/* ── HERO BAR ── */
+.hero-bar {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.stat-card {
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.stat-num {
+  color: #fff;
+}
+
+.stat-label {
+  color: rgba(255, 255, 255, 0.5);
+  letter-spacing: 0.05em;
+}
+
+/* ── SIDEBAR STICKY ── */
+.sticky-sidebar {
+  position: sticky;
+  top: 72px;
+}
+
+/* ── CARD DE LIBRO ── */
+.book-card {
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  border: 1px solid #e8ecf0 !important;
+  animation: fadeIn 0.3s ease both;
+}
+
+.book-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1) !important;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Portada del libro */
+.book-cover {
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  background: #f0f0f0;
+}
+
+/* Placeholder cuando no hay portada */
+.book-cover-placeholder {
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.7rem;
+  text-align: center;
+  padding: 8px;
+  gap: 6px;
+}
+
+/* ── BADGE DE GÉNERO ── */
+.genre-badge {
+  font-size: 0.68rem;
+}
+
+/* ── LOG DE API ── */
+.log-pre {
+  background: #1e2028;
+  color: #a8e6c8;
+  font-family: 'Courier New', monospace;
+  font-size: 0.72rem;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  min-height: 120px;
+  max-height: 340px;
+  overflow-y: auto;
+  border-radius: 0 0 8px 8px;
+  scrollbar-width: thin;
+  scrollbar-color: #333 transparent;
+}
+
+.log-pre.success {
+  color: #6ee7b7;
+}
+
+.log-pre.error {
+  color: #fca5a5;
+}
+
+.log-pre.warning {
+  color: #fcd34d;
+}
+
+/* ── HISTORIAL ── */
+.historial-item {
+  animation: fadeIn 0.2s ease both;
+}
+
+.historial-method {
+  font-size: 0.6rem;
+  font-weight: 700;
+  font-family: monospace;
+  padding: 1px 5px;
+  border-radius: 3px;
+}
+
+/* ── MODAL ── */
+.modal-content {
+  border-radius: 12px !important;
+  overflow: hidden;
+}
+
+/* ── UTILIDADES ── */
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.text-truncate-2 {
+  display: -webkit-box;
+  line-clamp: 2;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.bg-pink-subtle { background-color: #fce4ec ; }
+.text-pink      { color: #c2185b; }
