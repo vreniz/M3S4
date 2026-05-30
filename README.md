@@ -189,6 +189,7 @@ The Application panel shows the `myLibrary` key stored in LocalStorage. The valu
 ![LocalStorage](assets/application.png)
 ---
 
-##  Author
+## 👩🏻‍💻 Author
 
-Vanessa Fontalvo Reniz — Systems Engineering 
+**Vanessa Fontalvo Reniz** <br>
+**Systems & Computing Engineer** 
