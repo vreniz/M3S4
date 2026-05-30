@@ -161,6 +161,9 @@ This project was built to demonstrate the following Module 3 concepts:
 - [x] **TASK 5** — GET, POST, PUT, DELETE implemented with `async/await` and `try/catch`
 - [x] **TASK 6** — All operations work together; API responses logged to DOM and console
 ---
+## DEMO
+![Mini Library app](assets/library.png)
+---
 ## 📸 Evidence
 
 The following screenshots document the application behavior across the four key areas evaluated in Task 6.

@@ -159,7 +159,9 @@ Este proyecto fue construido para demostrar los siguientes conceptos del Módulo
 - [x] **TASK 4** — Arreglo global `books` sincronizado con `localStorage.setItem` / `getItem`; caché cargado al iniciar
 - [x] **TASK 5** — GET, POST, PUT, DELETE implementados con `async/await` y `try/catch`
 - [x] **TASK 6** — Todas las funcionalidades trabajan en conjunto; respuestas de la API registradas en el DOM y en la consola
-
+---
+## DEMO
+![Mini Library app](assets/library.png)
 ---
 
 ## 📸 Evidencia
