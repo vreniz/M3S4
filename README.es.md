@@ -190,6 +190,7 @@ El panel Application muestra la clave `myLibrary` almacenada en LocalStorage con
 
 ---
 
-## 👩‍💻 Autora
+## 👩🏻‍💻 Autor
 
-Vanessa Fontalvo Reniz — Ingeniería de Sistemas · Universidad del Norte
+**Vanessa Fontalvo Reniz** <br>
+**Systems & Computing Engineer** 
