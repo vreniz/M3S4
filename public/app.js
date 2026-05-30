@@ -425,7 +425,6 @@ function buildBookCard(book, index, fromLS) {
   return li;
 }
 
-// ── Función principal — complejidad reducida a 2 ──
 
 /**
  * Renders the books array as cards in the DOM list.
@@ -453,7 +452,6 @@ function renderBooks(data, fromLS = false) {
  * Filters books by genre and/or search term and re-renders.
  * No fetch is made — filters the local array only.
  */
-// ── Funciones predicado puras — cada una evalúa una sola condición ──
 
 /**
  * Returns true if the book matches the selected genre,
@@ -510,7 +508,7 @@ function applyFilters() {
  * Shows the detail of a book in the detail modal.
  * @param {number} id - book ID to display
  */
-// ── Funciones auxiliares puras ──
+
 
 /**
  * Builds the cover HTML for the detail modal.
@@ -593,7 +591,7 @@ function buildDetailHTML(book) {
     </div>`;
 }
 
-// ── Función principal — complejidad reducida a 2 ──
+
 
 /**
  * Finds a book by id, renders its detail HTML and opens the detail modal.
@@ -901,9 +899,12 @@ function handleDeleteError(err) {
  * @param {number} id
  */
 async function del(id) {
-  await fetchDeleteBook(id)
-    .then(() => handleDeleteSuccess(id))
-    .catch(handleDeleteError);
+  try {
+    await fetchDeleteBook(id);
+    handleDeleteSuccess(id);
+  } catch (err) {
+    handleDeleteError(err);
+  }
 }
 
 
@@ -1112,10 +1113,22 @@ bookList.addEventListener("click", e => {
 genreFilter.addEventListener("change", applyFilters);
 searchInput.addEventListener("input", applyFilters);
 
-// Limpia los modales al cerrarse
-modalAddEl.addEventListener("hidden.bs.modal",    () => clearForm("modalAdd"));
-modalEditEl.addEventListener("hidden.bs.modal",   () => clearForm("modalEdit"));
-modalDelEl.addEventListener("hidden.bs.modal",    () => clearForm("modalDelete"));
+// Limpia los formularios y mueve el foco al cerrar cada modal.
+// 'hide.bs.modal'   → se dispara ANTES de aplicar aria-hidden; blur() suelta
+//                     el foco del botón activo para evitar el warning de accesibilidad.
+// 'hidden.bs.modal' → se dispara DESPUÉS de cerrar; limpia los inputs del formulario.
+const modalCleanupMap = {
+  "modalAdd":    "modalAdd",
+  "modalEdit":   "modalEdit",
+  "modalDelete": "modalDelete",
+};
+
+[modalAddEl, modalEditEl, modalDelEl, modalDetailEl].forEach(el => {
+  el.addEventListener("hide.bs.modal",   () => document.activeElement?.blur());
+  el.addEventListener("hidden.bs.modal", () => {
+    if (modalCleanupMap[el.id]) clearForm(el.id);
+  });
+});
 
 
 // ════════════════════════════════════════════════════
@@ -1127,7 +1140,7 @@ modalDelEl.addEventListener("hidden.bs.modal",    () => clearForm("modalDelete")
 // los mostramos de inmediato sin esperar al servidor.
 // ════════════════════════════════════════════════════
 
-(function init() {
+(async function init() {
   console.log("[MyLibrary] Starting application…");
   console.log("[LocalStorage] Key:", LS_KEY);
   console.log("[LocalStorage] Cached books:", books.length);
@@ -1153,7 +1166,10 @@ modalDelEl.addEventListener("hidden.bs.modal",    () => clearForm("modalDelete")
 
   // Intenta conectar con el servidor automáticamente
   // Si falla, ya mostramos el caché arriba
-  fetch(`${BASE_URL}/books`)
-    .then(r => { if (r.ok) updateAPIStatus(true); })
-    .catch(() => updateAPIStatus(false));
+  try {
+    const r = await fetch(`${BASE_URL}/books`);
+    updateAPIStatus(r.ok);
+  } catch {
+    updateAPIStatus(false);
+  }
 })();

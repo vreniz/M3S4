@@ -1,7 +1,7 @@
 {
   "books": [
     {
-      "title": "One Hundred Years of Solitude",
+      "title": "Cien Años de Soledad (spanish)",
       "author": "Gabriel García Márquez",
       "year": 1967,
       "pages": 471,
@@ -62,6 +62,24 @@
       "genre": "Fantasy",
       "cover": "https://m.media-amazon.com/images/I/91dQRqjWTbL._SY522_.jpg",
       "id": 7
+    },
+    {
+      "title": "The Wicked King",
+      "author": "Holly Black",
+      "year": 2023,
+      "pages": 520,
+      "genre": "Fantasy",
+      "cover": "https://m.media-amazon.com/images/I/61fKd8CT5hL._SY445_SX342_ML2_.jpg",
+      "id": 8
+    },
+    {
+      "title": "The Queen Of Nothing",
+      "author": "Holly Black",
+      "year": 2023,
+      "pages": 473,
+      "genre": "Fantasy",
+      "cover": "https://m.media-amazon.com/images/I/51xZigba+RL._SY445_SX342_ML2_.jpg",
+      "id": 9
     }
   ]
 }
