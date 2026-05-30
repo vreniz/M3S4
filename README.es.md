@@ -61,7 +61,7 @@ M3S4/
 
 ```bash
 # 1. Clonar el repositorio
-git clone <url-del-repositorio>
+git clone https://github.com/vreniz/M3S4.git
 cd M3S4
 
 # 2. Instalar dependencias

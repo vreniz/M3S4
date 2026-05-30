@@ -62,7 +62,7 @@ M3S4/
 
 ```bash
 # 1. Clone the repository
-git clone <your-repo-url>
+git clone https://github.com/vreniz/M3S4.git
 cd M3S4
 
 # 2. Install dependencies
